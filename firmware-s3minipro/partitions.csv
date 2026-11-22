@@ -1,0 +1,20 @@
+# Sera-vice v2 partition table - LOLIN S3 Mini Pro (4 MB flash)
+# -------------------------------------------------------------------
+# Single factory app slot (no OTA), NVS preserved, and a dedicated
+# 1 MB data partition at a FIXED offset (0x200000) where theme packs
+# live. Firmware updates never touch the pack; pack updates never
+# touch the firmware. The top 1 MB is spare, reserved for later.
+#
+#   0x000000 - 0x008000  bootloader (not a partition)
+#   0x008000 - 0x009000  partition table itself
+#   0x009000 - 0x00E000  nvs        (settings / future state)
+#   0x00F000 - 0x010000  phy_init
+#   0x010000 - 0x200000  factory app (0x1F0000 = 1.94 MiB)
+#   0x200000 - 0x300000  themepack  (1 MB, SRPK packs - see themepack.h)
+#   0x300000 - 0x400000  spare (unallocated)
+#
+# Name,     Type, SubType, Offset,   Size,     Flags
+nvs,        data, nvs,     0x9000,   0x5000,
+phy_init,   data, phy,     0xf000,   0x1000,
+factory,    app,  factory, 0x10000,  0x1F0000,
+themepack,  data, spiffs,  0x200000, 0x100000,
